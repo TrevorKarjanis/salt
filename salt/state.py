@@ -1136,6 +1136,14 @@ class State(object):
                         .format(name, body['__sls__'], state)
                     )
                     continue
+                if isinstance(body[state], dict):
+                    # Convert the dict to an array of key/value pairs.
+                    args = []
+                    for key, value in six.iteritems(body[state]):
+                        arg = {}
+                        arg[key] = value
+                        args.append(arg)
+                    body[state] = args
                 if not isinstance(body[state], list):
                     errors.append(
                         'State \'{0}\' in SLS \'{1}\' is not formed as a list'
